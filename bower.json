@@ -1,0 +1,21 @@
+{
+  "name": "purescript-options",
+  "homepage": "https://github.com/ethul/purescript-options",
+  "description": "PureScript Options",
+  "keywords": [
+    "purescript"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "examples",
+    "dist"
+  ],
+  "dependencies": {
+    "purescript-monoid": "~0.1.4",
+    "purescript-maybe": "~0.2.1",
+    "purescript-foreign": "~0.2.2"
+  }
+}
