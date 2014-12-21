@@ -32,6 +32,9 @@ instance optionsMonoid :: Monoid (Options a) where
 instance stringIsOption :: IsOption String where
   (:=) = runFn2 primIsOptionFn
 
+instance booleanIsOption :: IsOption Boolean where
+  (:=) = runFn2 primIsOptionFn
+
 instance numberIsOption :: IsOption Number where
   (:=) = runFn2 primIsOptionFn
 
