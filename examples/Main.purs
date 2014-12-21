@@ -21,7 +21,9 @@ foreign import foo "var foo = 'foo';" :: Option Foo String
 
 foreign import bar "var bar = 'bar';" :: Option Foo Number
 
-foreign import baz "var baz = 'baz';" :: Option Foo (Maybe String)
+foreign import baz "var baz = 'baz';" :: Option Foo Boolean
+
+foreign import bam "var bam = 'bam';" :: Option Foo (Maybe String)
 
 foreign import fiz "var fiz = 'fiz';" :: Option Foo (Maybe String)
 
@@ -29,7 +31,8 @@ foreign import biz "var biz = 'biz';" :: Option Foo Shape
 
 opts = foo := "aaa" <>
        bar := 10 <>
-       baz := Just "c" <>
+       baz := true <>
+       bam := Just "c" <>
        fiz := Nothing <>
        biz := Square
 
