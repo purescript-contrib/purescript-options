@@ -13,7 +13,7 @@ var gulp = require('gulp')
         ],
         examples: 'examples/**/*.purs',
         dest: 'dist',
-        docgen: 'MODULE.md',
+        docs: 'MODULE.md',
         options: {
           main: 'Main'
         }
@@ -58,13 +58,13 @@ gulp.task('psci', function(){
   );
 });
 
-gulp.task('docgen', function(){
+gulp.task('docs', function(){
   return (
     gulp.src(config.purescript.src[1]).
     pipe(plumber()).
-    pipe(purescript.docgen()).
+    pipe(purescript.pscDocs()).
     on('error', error).
-    pipe(gulp.dest(config.purescript.docgen))
+    pipe(gulp.dest(config.purescript.docs))
   );
 });
 
@@ -72,11 +72,11 @@ gulp.task('watch', function(cb){
   gulp.watch(config.purescript.src, ['make']);
 });
 
-gulp.task('watch.examples', function(cb){
+gulp.task('watch:examples', function(cb){
   gulp.watch([ config.purescript.src
              , config.purescript.examples ], ['examples']);
 });
 
 gulp.task('default', function(){
-  sequence('clean', 'make', ['psci', 'docgen']);
+  sequence('clean', 'make', ['psci', 'docs']);
 });

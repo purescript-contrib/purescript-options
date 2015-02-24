@@ -29,12 +29,18 @@ foreign import fiz "var fiz = 'fiz';" :: Option Foo (Maybe String)
 
 foreign import biz "var biz = 'biz';" :: Option Foo Shape
 
+foreign import buz "var buz = 'buz';" :: Option Foo (Number -> Number -> Number -> Number)
+
+foreign import fuz "var fuz = 'fuz';" :: Option Foo [Shape]
+
 opts = foo := "aaa" <>
        bar := 10 <>
        baz := true <>
        bam := Just "c" <>
        fiz := Nothing <>
-       biz := Square
+       biz := Square <>
+       buz := (\a b c -> a + b + c) <>
+       fuz := [Square, Circle, Triangle]
 
 main = (trace <<< showForeign <<< options) opts
 
