@@ -14,8 +14,8 @@
     "dist"
   ],
   "dependencies": {
-    "purescript-monoid": "~0.1.4",
+    "purescript-monoid": "~0.2.0",
     "purescript-maybe": "~0.2.1",
-    "purescript-foreign": "~0.2.2"
+    "purescript-foreign": "~0.4.0"
   }
 }
