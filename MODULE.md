@@ -101,5 +101,12 @@ options :: forall a. Options a -> Foreign
 ```
 
 
+#### `opt`
+
+``` purescript
+opt :: forall k v. (IsOption v) => String -> Option k v
+```
+
+
 
 

@@ -2,7 +2,7 @@ module Main where
 
 import Data.Foreign (Foreign())
 import Data.Maybe (Maybe(..))
-import Data.Options (Option(), IsOption, optionFn, options, (:=))
+import Data.Options (Option(), IsOption, optionFn, options, opt, (:=))
 import Debug.Trace
 
 data Shape = Circle | Square | Triangle
@@ -17,21 +17,14 @@ instance shapeIsOption :: IsOption Shape where
 
 foreign import data Foo :: *
 
-foreign import foo "var foo = 'foo';" :: Option Foo String
-
-foreign import bar "var bar = 'bar';" :: Option Foo Number
-
-foreign import baz "var baz = 'baz';" :: Option Foo Boolean
-
-foreign import bam "var bam = 'bam';" :: Option Foo (Maybe String)
-
-foreign import fiz "var fiz = 'fiz';" :: Option Foo (Maybe String)
-
-foreign import biz "var biz = 'biz';" :: Option Foo Shape
-
-foreign import buz "var buz = 'buz';" :: Option Foo (Number -> Number -> Number -> Number)
-
-foreign import fuz "var fuz = 'fuz';" :: Option Foo [Shape]
+foo = opt "foo" :: Option Foo String
+bar = opt "bar" :: Option Foo Number
+baz = opt "baz" :: Option Foo Boolean
+bam = opt "bam" :: Option Foo (Maybe String)
+fiz = opt "fiz" :: Option Foo (Maybe String)
+biz = opt "biz" :: Option Foo Shape
+buz = opt "buz" :: Option Foo (Number -> Number -> Number -> Number)
+fuz = opt "fuz" :: Option Foo [Shape]
 
 opts = foo := "aaa" <>
        bar := 10 <>
