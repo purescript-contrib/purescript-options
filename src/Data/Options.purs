@@ -4,6 +4,7 @@ module Data.Options
   , IsOption
   , optionFn
   , options
+  , opt
   , (:=)
   ) where
 
@@ -92,3 +93,10 @@ foreign import options """
     return res;
   }
 """ :: forall a. Options a -> Foreign
+
+foreign import opt
+  """
+  function opt (k) {
+    return k;
+  }
+  """ :: forall k v. (IsOption v) => String -> Option k v
