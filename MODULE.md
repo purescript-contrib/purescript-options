@@ -108,5 +108,12 @@ opt :: forall k v. (IsOption v) => String -> Option k v
 ```
 
 
+#### `key`
+
+``` purescript
+key :: forall k v. Option k v -> String
+```
+
+
 
 
