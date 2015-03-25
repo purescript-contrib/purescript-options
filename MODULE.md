@@ -73,6 +73,13 @@ instance isOptionRecord :: IsOption {  | a }
 ```
 
 
+#### `isOptionUnit`
+
+``` purescript
+instance isOptionUnit :: IsOption Unit
+```
+
+
 #### `isOptionFunction`
 
 ``` purescript

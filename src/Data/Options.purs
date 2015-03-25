@@ -43,6 +43,9 @@ instance isOptionNumber :: IsOption Number where
 instance isOptionRecord :: IsOption { | a } where
   (:=) = runFn2 isOptionPrimFn
 
+instance isOptionUnit :: IsOption Unit where
+  (:=) = runFn2 isOptionPrimFn
+
 instance isOptionFunction :: IsOption (a -> b) where
   (:=) = runFn2 isOptionPrimFn
 
