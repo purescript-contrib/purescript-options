@@ -2,4 +2,5 @@
 .psci_modules/
 node_modules
 bower_components
-dist
+build
+bundle.js
