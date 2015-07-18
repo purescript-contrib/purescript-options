@@ -1,9 +1,14 @@
-module Main where
+module Example.Main where
+
+import Prelude
+
+import Control.Monad.Eff.Console (log)
 
 import Data.Foreign (Foreign())
+
 import Data.Maybe (Maybe(..))
-import Data.Options (Option(), IsOption, optionFn, options, opt, (:=))
-import Debug.Trace
+
+import Data.Options (Option(), IsOption, optionFn, options, opt, (:=), assoc)
 
 data Shape = Circle | Square | Triangle
 
@@ -13,18 +18,18 @@ instance shapeShow :: Show Shape where
   show Triangle = "triangle"
 
 instance shapeIsOption :: IsOption Shape where
-  (:=) k a = (optionFn k) := show a
+  assoc k a = assoc (optionFn k) (show a)
 
 foreign import data Foo :: *
 
 foo = opt "foo" :: Option Foo String
-bar = opt "bar" :: Option Foo Number
+bar = opt "bar" :: Option Foo Int
 baz = opt "baz" :: Option Foo Boolean
 bam = opt "bam" :: Option Foo (Maybe String)
 fiz = opt "fiz" :: Option Foo (Maybe String)
 biz = opt "biz" :: Option Foo Shape
-buz = opt "buz" :: Option Foo (Number -> Number -> Number -> Number)
-fuz = opt "fuz" :: Option Foo [Shape]
+buz = opt "buz" :: Option Foo (Int -> Int -> Int -> Int)
+fuz = opt "fuz" :: Option Foo (Array Shape)
 
 opts = foo := "aaa" <>
        bar := 10 <>
@@ -35,11 +40,6 @@ opts = foo := "aaa" <>
        buz := (\a b c -> a + b + c) <>
        fuz := [Square, Circle, Triangle]
 
-main = (trace <<< showForeign <<< options) opts
+main = (log <<< showForeign <<< options) opts
 
-foreign import showForeign
-  """
-    function showForeign(a){
-      return JSON.stringify(a);
-    }
-  """ :: Foreign -> String
+foreign import showForeign :: Foreign -> String

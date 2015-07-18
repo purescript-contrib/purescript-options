@@ -2,112 +2,85 @@ module Data.Options
   ( Options()
   , Option()
   , IsOption
+  , assoc, (:=)
   , optionFn
   , options
-  , opt
-  , key
-  , (:=)
+  , opt, key
   ) where
 
+import Prelude
+
 import Data.Foreign (Foreign())
+
 import Data.Function (Fn2(), runFn2)
+
 import Data.Maybe (Maybe(..))
+
 import Data.Monoid (Monoid)
+
+import Unsafe.Coerce (unsafeCoerce)
 
 foreign import data Options :: * -> *
 
 foreign import data Option :: * -> * -> *
 
+class IsOption value where
+  assoc :: forall opt. Option opt value -> value -> Options opt
+
 infixr 6 :=
 
-class IsOption r where
-  (:=) :: forall a. Option a r -> r -> Options a
-
-foreign import optionFn "function optionFn(a){return a;}" :: forall r s a. Option a r -> Option a s
+(:=) :: forall opt value. (IsOption value) => Option opt value -> value -> Options opt
+(:=) = assoc
 
 instance semigroupOptions :: Semigroup (Options a) where
-  (<>) = runFn2 appendFn
+  append = runFn2 appendFn
 
 instance monoidOptions :: Monoid (Options a) where
   mempty = memptyFn
 
 instance isOptionString :: IsOption String where
-  (:=) = runFn2 isOptionPrimFn
+  assoc = runFn2 isOptionPrimFn
 
 instance isOptionBoolean :: IsOption Boolean where
-  (:=) = runFn2 isOptionPrimFn
+  assoc = runFn2 isOptionPrimFn
 
 instance isOptionNumber :: IsOption Number where
-  (:=) = runFn2 isOptionPrimFn
+  assoc = runFn2 isOptionPrimFn
+
+instance isOptionInt :: IsOption Int where
+  assoc = runFn2 isOptionPrimFn
 
 instance isOptionRecord :: IsOption { | a } where
-  (:=) = runFn2 isOptionPrimFn
+  assoc = runFn2 isOptionPrimFn
 
 instance isOptionUnit :: IsOption Unit where
-  (:=) = runFn2 isOptionPrimFn
+  assoc = runFn2 isOptionPrimFn
 
 instance isOptionFunction :: IsOption (a -> b) where
-  (:=) = runFn2 isOptionPrimFn
+  assoc = runFn2 isOptionPrimFn
 
-instance isOptionArray :: (IsOption a) => IsOption [a] where
-  (:=) k vs = joinFn $ (:=) (optionFn k) <$> vs
+instance isOptionArray :: (IsOption a) => IsOption (Array a) where
+  assoc k vs = joinFn $ assoc (optionFn k) <$> vs
 
 instance isOptionMaybe :: (IsOption a) => IsOption (Maybe a) where
-  (:=) k Nothing = memptyFn
-  (:=) k (Just a) = (optionFn k) := a
+  assoc k Nothing = memptyFn
+  assoc k (Just a) = assoc (optionFn k) a
 
-foreign import memptyFn "var memptyFn = [];" :: forall a. Options a
+optionFn :: forall opt from to. Option opt from -> Option opt to
+optionFn = unsafeCoerce
 
-foreign import appendFn """
-  function appendFn(o1, o2) {
-    return o1.concat(o2);
-  }
-""" :: forall a. Fn2 (Options a) (Options a) (Options a)
+key :: forall opt value. Option opt value -> String
+key = unsafeCoerce
 
-foreign import joinFn """
-  function joinFn(os) {
-    var k = null;
-    var vs = [];
-    var i = -1;
-    var n = os.length;
-    while(++i < n) {
-      k = os[i][0][0];
-      vs.push(os[i][0][1]);
-    }
-    return [[k, vs]];
-  }
-""" :: forall a b. [Options a] -> Options b
+opt :: forall opt value. (IsOption value) => String -> Option opt value
+opt = unsafeCoerce
 
-foreign import isOptionPrimFn """
-  function isOptionPrimFn(k, v) {
-    return [[k, v]];
-  }
-""" :: forall b a. Fn2 (Option b a) a (Options b)
+foreign import memptyFn :: forall a. Options a
 
-foreign import options """
-  function options(o) {
-    var res = {};
-    var i = -1;
-    var n = o.length;
-    while(++i < n) {
-      var k = o[i][0];
-      var v = o[i][1];
-      res[k] = v;
-    }
-    return res;
-  }
-""" :: forall a. Options a -> Foreign
+foreign import appendFn :: forall a. Fn2 (Options a) (Options a) (Options a)
 
-foreign import opt """
-  function opt(dict) {
-    return function(k){
-      return k;
-    }
-  }
-""" :: forall k v. (IsOption v) => String -> Option k v
+foreign import joinFn :: forall a b. Array (Options a) -> Options b
 
-foreign import key """
-  function key(o){
-    return o;
-  }
-""" :: forall k v. Option k v -> String
+foreign import isOptionPrimFn :: forall b a. Fn2 (Option b a) a (Options b)
+
+foreign import options :: forall a. Options a -> Foreign
