@@ -1,6 +1,6 @@
 'use strict';
 
-// module Example.Main
+// module Test.Main
 
 function showForeign(a){
   return JSON.stringify(a);
