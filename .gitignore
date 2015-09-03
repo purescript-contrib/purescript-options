@@ -1,6 +1,5 @@
 .psci
 .psci_modules/
-node_modules
-bower_components
-build
-bundle.js
+node_modules/
+bower_components/
+output/

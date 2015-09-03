@@ -1,13 +1,14 @@
 {
   "name": "purescript-options",
   "private": true,
+  "scripts": {
+    "build": "pulp build",
+    "build:watch": "pulp -w build",
+    "test": "pulp test",
+    "test:watch": "pulp -w test",
+    "docs": "pulp docs"
+  },
   "devDependencies": {
-    "del": "^1.2.0",
-    "gulp": "^3.9.0",
-    "gulp-plumber": "0.5.6",
-    "gulp-purescript": "^0.5.0",
-    "gulp-util": "2.2.14",
-    "rimraf": "2.2.8",
-    "run-sequence": "0.3.6"
+    "pulp": "^4.3.0"
   }
 }
