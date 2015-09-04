@@ -5,6 +5,7 @@ module Data.Options
   , assoc, (:=)
   , optionFn
   , options
+  , runOptions
   , opt, key
   ) where
 
@@ -17,6 +18,8 @@ import Data.Function (Fn2(), runFn2)
 import Data.Maybe (Maybe(..))
 
 import Data.Monoid (Monoid)
+
+import Data.Tuple (Tuple(..))
 
 import Unsafe.Coerce (unsafeCoerce)
 
@@ -75,6 +78,9 @@ key = unsafeCoerce
 opt :: forall opt value. (IsOption value) => String -> Option opt value
 opt = unsafeCoerce
 
+runOptions :: forall a. Options a -> Array (Tuple String Foreign)
+runOptions = runOptionsFn Tuple
+
 foreign import memptyFn :: forall a. Options a
 
 foreign import appendFn :: forall a. Fn2 (Options a) (Options a) (Options a)
@@ -84,3 +90,5 @@ foreign import joinFn :: forall a b. Array (Options a) -> Options b
 foreign import isOptionPrimFn :: forall b a. Fn2 (Option b a) a (Options b)
 
 foreign import options :: forall a. Options a -> Foreign
+
+foreign import runOptionsFn :: forall a. (String -> Foreign -> Tuple String Foreign) -> Options a -> Array (Tuple String Foreign)

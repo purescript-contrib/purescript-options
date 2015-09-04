@@ -64,6 +64,12 @@ key :: forall opt value. Option opt value -> String
 opt :: forall opt value. (IsOption value) => String -> Option opt value
 ```
 
+#### `runOptions`
+
+``` purescript
+runOptions :: forall a. Options a -> Array (Tuple String Foreign)
+```
+
 #### `options`
 
 ``` purescript

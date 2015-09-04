@@ -2,13 +2,15 @@ module Test.Main where
 
 import Prelude
 
-import Control.Monad.Eff.Console (log)
+import Control.Monad.Eff.Console (log, print)
 
 import Data.Foreign (Foreign())
 
 import Data.Maybe (Maybe(..))
 
-import Data.Options (Option(), IsOption, optionFn, options, opt, (:=), assoc)
+import Data.Options (Option(), IsOption, optionFn, options, opt, (:=), assoc, runOptions)
+
+import Data.Tuple (Tuple(..))
 
 data Shape = Circle | Square | Triangle
 
@@ -40,6 +42,8 @@ opts = foo := "aaa" <>
        buz := (\a b c -> a + b + c) <>
        fuz := [Square, Circle, Triangle]
 
-main = (log <<< showForeign <<< options) opts
+main = do
+  (log <<< showForeign <<< options) opts
+  print $ (\(Tuple k v) -> Tuple k (showForeign v)) <$> runOptions opts
 
 foreign import showForeign :: Foreign -> String
