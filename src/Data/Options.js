@@ -26,14 +26,28 @@ function isOptionPrimFn(k, v) {
 
 function options(o) {
   var res = {};
-  var i = -1;
   var n = o.length;
-  while(++i < n) {
+  var i;
+  for (i = 0; i < n; i++) {
     var k = o[i][0];
     var v = o[i][1];
     res[k] = v;
   }
   return res;
+}
+
+function runOptionsFn(Tuple) {
+  return function(o){
+    var res = [];
+    var n = o.length;
+    var i;
+    for (i = 0; i < n; i++) {
+      var k = o[i][0];
+      var v = o[i][1];
+      res[i] = Tuple(k)(v);
+    }
+    return res;
+  };
 }
 
 exports.memptyFn = memptyFn;
@@ -45,3 +59,5 @@ exports.joinFn = joinFn;
 exports.isOptionPrimFn = isOptionPrimFn;
 
 exports.options = options;
+
+exports.runOptionsFn = runOptionsFn
