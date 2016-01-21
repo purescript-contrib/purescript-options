@@ -6,6 +6,10 @@
     "purescript"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ethul/purescript-options.git"
+  },
   "ignore": [
     "*",
     "!src/**/*",
