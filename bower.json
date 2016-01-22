@@ -17,7 +17,11 @@
   ],
   "dependencies": {
     "purescript-foreign": "~0.7.0",
-    "purescript-unsafe-coerce": "~0.1.0"
+    "purescript-maps": "~0.5.4",
+    "purescript-tuples": "~0.4.0",
+    "purescript-monoid": "~0.3.2",
+    "purescript-maybe": "~0.3.5",
+    "purescript-contravariant": "~0.2.3"
   },
   "devDependencies": {
     "purescript-console": "~0.1.1"
