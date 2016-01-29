@@ -1,94 +1,78 @@
 module Data.Options
   ( Options()
-  , Option()
-  , IsOption
-  , assoc, (:=)
-  , optionFn
-  , options
   , runOptions
-  , opt, key
+  , options
+  , Option
+  , assoc, (:=)
+  , optional
+  , opt
+  , tag
+  , defaultToOptions
   ) where
 
 import Prelude
 
-import Data.Foreign (Foreign())
-
-import Data.Function (Fn2(), runFn2)
-
-import Data.Maybe (Maybe(..))
-
-import Data.Monoid (Monoid)
-
+import Data.Foreign (toForeign, Foreign())
+import Data.Maybe (Maybe(), maybe)
+import Data.Monoid (mempty, Monoid)
+import Data.Op (Op(Op), runOp)
+import Data.StrMap as StrMap
 import Data.Tuple (Tuple(..))
 
-import Unsafe.Coerce (unsafeCoerce)
+-- | The `Options` type represents a set of options. The type argument is a
+-- | phantom type, which is useful for ensuring that options for one particular
+-- | API are not accidentally passed to some other API.
+newtype Options opt =
+  Options (Array (Tuple String Foreign))
 
-foreign import data Options :: * -> *
+runOptions :: forall opt. Options opt -> Array (Tuple String Foreign)
+runOptions (Options xs) = xs
 
-foreign import data Option :: * -> * -> *
+instance semigroupOptions :: Semigroup (Options opt) where
+  append (Options xs) (Options ys) = Options (xs <> ys)
 
-class IsOption value where
-  assoc :: forall opt. Option opt value -> value -> Options opt
+instance monoidOptions :: Monoid (Options opt) where
+  mempty = Options []
+
+-- | Convert an `Options` value into a JavaScript object, suitable for passing
+-- | to JavaScript APIs.
+options :: forall opt. Options opt -> Foreign
+options = toForeign <<< StrMap.fromFoldable <<< runOptions
+
+-- | An `Option` represents an opportunity to configure a specific attribute
+-- | of a call to some API. This normally corresponds to one specific property
+-- | of an "options" object in JavaScript APIs, but can in general correspond
+-- | to zero or more actual properties.
+type Option opt = Op (Options opt)
+
+-- | Associates a value with a specific option.
+assoc :: forall opt value. Option opt value -> value -> Options opt
+assoc o value = runOp o value
 
 infixr 6 :=
 
-(:=) :: forall opt value. (IsOption value) => Option opt value -> value -> Options opt
+-- | An infix version of `assoc`.
+(:=) :: forall opt value. Option opt value -> value -> Options opt
 (:=) = assoc
 
-instance semigroupOptions :: Semigroup (Options a) where
-  append = runFn2 appendFn
+-- | A version of `assoc` which takes possibly absent values. `Nothing` values
+-- | are ignored; passing `Nothing` for the second argument will result in an
+-- | empty `Options`.
+optional :: forall opt value. Option opt value -> Option opt (Maybe value)
+optional option = Op $ maybe mempty (option :=)
 
-instance monoidOptions :: Monoid (Options a) where
-  mempty = memptyFn
+-- | The default way of creating `Option` values. Constructs an `Option` with
+-- | the given key, which passes the given value through unchanged.
+opt :: forall opt value. String -> Option opt value
+opt = Op <<< defaultToOptions
 
-instance isOptionString :: IsOption String where
-  assoc = runFn2 isOptionPrimFn
+-- | Create a `tag`, by fixing an `Option` to a single value.
+tag :: forall opt value. Option opt value -> value -> Option opt Unit
+tag o value = Op \_ -> o := value
 
-instance isOptionBoolean :: IsOption Boolean where
-  assoc = runFn2 isOptionPrimFn
-
-instance isOptionNumber :: IsOption Number where
-  assoc = runFn2 isOptionPrimFn
-
-instance isOptionInt :: IsOption Int where
-  assoc = runFn2 isOptionPrimFn
-
-instance isOptionRecord :: IsOption { | a } where
-  assoc = runFn2 isOptionPrimFn
-
-instance isOptionUnit :: IsOption Unit where
-  assoc = runFn2 isOptionPrimFn
-
-instance isOptionFunction :: IsOption (a -> b) where
-  assoc = runFn2 isOptionPrimFn
-
-instance isOptionArray :: (IsOption a) => IsOption (Array a) where
-  assoc k vs = joinFn $ assoc (optionFn k) <$> vs
-
-instance isOptionMaybe :: (IsOption a) => IsOption (Maybe a) where
-  assoc k Nothing = memptyFn
-  assoc k (Just a) = assoc (optionFn k) a
-
-optionFn :: forall opt from to. Option opt from -> Option opt to
-optionFn = unsafeCoerce
-
-key :: forall opt value. Option opt value -> String
-key = unsafeCoerce
-
-opt :: forall opt value. (IsOption value) => String -> Option opt value
-opt = unsafeCoerce
-
-runOptions :: forall a. Options a -> Array (Tuple String Foreign)
-runOptions = runOptionsFn Tuple
-
-foreign import memptyFn :: forall a. Options a
-
-foreign import appendFn :: forall a. Fn2 (Options a) (Options a) (Options a)
-
-foreign import joinFn :: forall a b. Array (Options a) -> Options b
-
-foreign import isOptionPrimFn :: forall b a. Fn2 (Option b a) a (Options b)
-
-foreign import options :: forall a. Options a -> Foreign
-
-foreign import runOptionsFn :: forall a. (String -> Foreign -> Tuple String Foreign) -> Options a -> Array (Tuple String Foreign)
+-- | The default method for turning a string property key into an
+-- | `Option`. This function simply calls `toForeign` on the value. If
+-- | you need some other behaviour, you can write your own function to replace
+-- | this one, and construct an `Option` yourself.
+defaultToOptions :: forall opt value. String -> value -> Options opt
+defaultToOptions k v = Options [Tuple k (toForeign v)]

@@ -3,13 +3,10 @@ module Test.Main where
 import Prelude
 
 import Control.Monad.Eff.Console (log, print)
-
 import Data.Foreign (Foreign())
-
+import Data.Functor.Contravariant (cmap)
 import Data.Maybe (Maybe(..))
-
-import Data.Options (Option(), IsOption, optionFn, options, opt, (:=), assoc, runOptions)
-
+import Data.Options (Option, Options, optional, options, opt, (:=), runOptions)
 import Data.Tuple (Tuple(..))
 
 data Shape = Circle | Square | Triangle
@@ -19,20 +16,33 @@ instance shapeShow :: Show Shape where
   show Square = "square"
   show Triangle = "triangle"
 
-instance shapeIsOption :: IsOption Shape where
-  assoc k a = assoc (optionFn k) (show a)
-
 foreign import data Foo :: *
 
-foo = opt "foo" :: Option Foo String
-bar = opt "bar" :: Option Foo Int
-baz = opt "baz" :: Option Foo Boolean
-bam = opt "bam" :: Option Foo (Maybe String)
-fiz = opt "fiz" :: Option Foo (Maybe String)
-biz = opt "biz" :: Option Foo Shape
-buz = opt "buz" :: Option Foo (Int -> Int -> Int -> Int)
-fuz = opt "fuz" :: Option Foo (Array Shape)
+foo :: Option Foo String
+foo = opt "foo"
 
+bar :: Option Foo Int
+bar = opt "bar"
+
+baz :: Option Foo Boolean
+baz = opt "baz"
+
+bam :: Option Foo (Maybe String)
+bam = optional (opt "bam")
+
+fiz :: Option Foo (Maybe String)
+fiz = optional (opt "fiz")
+
+biz :: Option Foo Shape
+biz = cmap show (opt "shape")
+
+buz :: Option Foo (Int -> Int -> Int -> Int)
+buz = opt "buz"
+
+fuz :: Option Foo (Array Shape)
+fuz = cmap (map show) (opt "fuz")
+
+opts :: Options Foo
 opts = foo := "aaa" <>
        bar := 10 <>
        baz := true <>
@@ -42,8 +52,6 @@ opts = foo := "aaa" <>
        buz := (\a b c -> a + b + c) <>
        fuz := [Square, Circle, Triangle]
 
-main = do
-  (log <<< showForeign <<< options) opts
-  print $ (\(Tuple k v) -> Tuple k (showForeign v)) <$> runOptions opts
+main = log <<< showForeign <<< options $ opts
 
 foreign import showForeign :: Foreign -> String
