@@ -1,13 +1,14 @@
 module Test.Main where
 
-import Prelude
+import Prelude (Show, Unit(), (<<<), (<>), (+), ($), map, show)
 
-import Control.Monad.Eff.Console (log, print)
+import Control.Monad.Eff (Eff())
+import Control.Monad.Eff.Console (CONSOLE(), log)
+
 import Data.Foreign (Foreign())
 import Data.Functor.Contravariant (cmap)
 import Data.Maybe (Maybe(..))
-import Data.Options (Option, Options, optional, options, opt, (:=), runOptions)
-import Data.Tuple (Tuple(..))
+import Data.Options (Option(), Options(), optional, options, opt, (:=))
 
 data Shape = Circle | Square | Triangle
 
@@ -52,6 +53,7 @@ opts = foo := "aaa" <>
        buz := (\a b c -> a + b + c) <>
        fuz := [Square, Circle, Triangle]
 
+main :: forall eff. Eff (console :: CONSOLE | eff) Unit
 main = log <<< showForeign <<< options $ opts
 
 foreign import showForeign :: Foreign -> String

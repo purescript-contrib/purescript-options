@@ -2,7 +2,7 @@ module Data.Options
   ( Options()
   , runOptions
   , options
-  , Option
+  , Option()
   , assoc, (:=)
   , optional
   , opt
