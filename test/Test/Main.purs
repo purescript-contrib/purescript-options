@@ -1,6 +1,6 @@
 module Test.Main where
 
-import Prelude (Show, Unit(), (<<<), (<>), (+), ($), map, show)
+import Prelude (class Show, Unit(), (<<<), (<>), (+), ($), map, show)
 
 import Control.Monad.Eff (Eff())
 import Control.Monad.Eff.Console (CONSOLE(), log)
