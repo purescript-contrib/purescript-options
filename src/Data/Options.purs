@@ -10,11 +10,11 @@ module Data.Options
   , defaultToOptions
   ) where
 
-import Prelude
+import Prelude (class Semigroup, Unit, (<<<), ($), (<>))
 
 import Data.Foreign (toForeign, Foreign())
 import Data.Maybe (Maybe(), maybe)
-import Data.Monoid (mempty, Monoid)
+import Data.Monoid (mempty, class Monoid)
 import Data.Op (Op(Op), runOp)
 import Data.StrMap as StrMap
 import Data.Tuple (Tuple(..))
@@ -49,11 +49,8 @@ type Option opt = Op (Options opt)
 assoc :: forall opt value. Option opt value -> value -> Options opt
 assoc o value = runOp o value
 
-infixr 6 :=
-
 -- | An infix version of `assoc`.
-(:=) :: forall opt value. Option opt value -> value -> Options opt
-(:=) = assoc
+infixr 6 assoc as :=
 
 -- | A version of `assoc` which takes possibly absent values. `Nothing` values
 -- | are ignored; passing `Nothing` for the second argument will result in an
