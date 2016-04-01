@@ -18,7 +18,7 @@ instance shapeShow :: Show Shape where
   show Triangle = "triangle"
 
 foreign import data Foo :: *
-foreign import data Foo2 :: *
+foreign import data NestedBar :: *
 
 foo :: Option Foo String
 foo = opt "foo"
@@ -44,14 +44,14 @@ buz = opt "buz"
 fuz :: Option Foo (Array Shape)
 fuz = cmap (map show) (opt "fuz")
 
-foo2 :: Option Foo (Options Foo2)
-foo2 = nestedOpt "foo2"
+nestedBar :: Option Foo (Options NestedBar)
+nestedBar = nestedOpt "nestedBar"
 
-foo2bar :: Option Foo2 String
-foo2bar = opt "foo2bar"
+innerBar :: Option NestedBar String
+innerBar = opt "innerBar"
 
-foo2baz :: Option Foo2 Int
-foo2baz = opt "foo2baz"
+innerBaz :: Option NestedBar Int
+innerBaz = opt "innerBaz"
 
 opts :: Options Foo
 opts = foo := "aaa" <>
@@ -62,10 +62,10 @@ opts = foo := "aaa" <>
        biz := Square <>
        buz := (\a b c -> a + b + c) <>
        fuz := [Square, Circle, Triangle] <>
-       foo2 := foo2values
-  where foo2values =
-    foo2bar := "foo2bar" <>
-    foo2baz := 2
+       nestedBar := nestedBarOptions
+  where nestedBarOptions =
+    innerBar := "the inner bar" <>
+    innerBaz := 2
 
 main :: forall eff. Eff (console :: CONSOLE | eff) Unit
 main = log <<< showForeign <<< options $ opts
