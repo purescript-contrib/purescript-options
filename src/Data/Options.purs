@@ -6,6 +6,7 @@ module Data.Options
   , assoc, (:=)
   , optional
   , opt
+  , nestedOpt
   , tag
   , defaultToOptions
   ) where
@@ -62,6 +63,11 @@ optional option = Op $ maybe mempty (option :=)
 -- | the given key, which passes the given value through unchanged.
 opt :: forall opt value. String -> Option opt value
 opt = Op <<< defaultToOptions
+
+-- | Creates a nested `Option`; that is, an `Option` whose value is itself an
+-- | `Options` object.
+nestedOpt :: forall opt1 opt2. String -> Option opt1 (Options opt2)
+nestedOpt k = Op \d -> defaultToOptions k (options d)
 
 -- | Create a `tag`, by fixing an `Option` to a single value.
 tag :: forall opt value. Option opt value -> value -> Option opt Unit
