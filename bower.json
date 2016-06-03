@@ -16,14 +16,14 @@
     "!LICENSE"
   ],
   "dependencies": {
-    "purescript-foreign": "~0.7.0",
-    "purescript-maps": "~0.5.4",
-    "purescript-tuples": "~0.4.0",
-    "purescript-monoid": "~0.3.2",
-    "purescript-maybe": "~0.3.5",
-    "purescript-contravariant": "~0.2.3"
+    "purescript-foreign": "^1.0.0",
+    "purescript-maps": "^1.0.0",
+    "purescript-tuples": "^1.0.0",
+    "purescript-monoid": "^1.0.0",
+    "purescript-maybe": "^1.0.0",
+    "purescript-contravariant": "^1.0.0"
   },
   "devDependencies": {
-    "purescript-console": "~0.1.1"
+    "purescript-console": "^1.0.0"
   }
 }
