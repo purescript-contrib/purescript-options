@@ -53,10 +53,8 @@ Associates a value with a specific option.
 #### `(:=)`
 
 ``` purescript
-(:=) :: forall opt value. Option opt value -> value -> Options opt
+infixr 6 assoc as :=
 ```
-
-_right-associative / precedence 6_
 
 An infix version of `assoc`.
 

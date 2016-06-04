@@ -56,7 +56,7 @@ infixr 6 assoc as :=
 -- | are ignored; passing `Nothing` for the second argument will result in an
 -- | empty `Options`.
 optional :: forall opt value. Option opt value -> Option opt (Maybe value)
-optional option = Op $ maybe mempty (option :=)
+optional option = Op $ maybe mempty (option := _)
 
 -- | The default way of creating `Option` values. Constructs an `Option` with
 -- | the given key, which passes the given value through unchanged.
