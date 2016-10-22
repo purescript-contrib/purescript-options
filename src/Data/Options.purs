@@ -1,8 +1,8 @@
 module Data.Options
-  ( Options()
+  ( Options
   , runOptions
   , options
-  , Option()
+  , Option
   , assoc, (:=)
   , optional
   , opt
@@ -10,20 +10,20 @@ module Data.Options
   , defaultToOptions
   ) where
 
-import Prelude (class Semigroup, Unit, (<<<), ($), (<>))
+import Prelude
 
-import Data.Foreign (toForeign, Foreign())
-import Data.Maybe (Maybe(), maybe)
+import Data.Foreign (toForeign, Foreign)
+import Data.Maybe (Maybe, maybe)
 import Data.Monoid (mempty, class Monoid)
-import Data.Op (Op(Op), runOp)
+import Data.Newtype (unwrap)
+import Data.Op (Op(..))
 import Data.StrMap as StrMap
 import Data.Tuple (Tuple(..))
 
 -- | The `Options` type represents a set of options. The type argument is a
 -- | phantom type, which is useful for ensuring that options for one particular
 -- | API are not accidentally passed to some other API.
-newtype Options opt =
-  Options (Array (Tuple String Foreign))
+newtype Options opt = Options (Array (Tuple String Foreign))
 
 runOptions :: forall opt. Options opt -> Array (Tuple String Foreign)
 runOptions (Options xs) = xs
@@ -47,7 +47,7 @@ type Option opt = Op (Options opt)
 
 -- | Associates a value with a specific option.
 assoc :: forall opt value. Option opt value -> value -> Options opt
-assoc o value = runOp o value
+assoc = unwrap
 
 -- | An infix version of `assoc`.
 infixr 6 assoc as :=

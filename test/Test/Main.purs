@@ -1,14 +1,14 @@
 module Test.Main where
 
-import Prelude (class Show, Unit(), (<<<), (<>), (+), ($), map, show)
+import Prelude
 
-import Control.Monad.Eff (Eff())
-import Control.Monad.Eff.Console (CONSOLE(), log)
+import Control.Monad.Eff (Eff)
+import Control.Monad.Eff.Console (CONSOLE, log)
 
-import Data.Foreign (Foreign())
+import Data.Foreign (Foreign)
 import Data.Functor.Contravariant (cmap)
 import Data.Maybe (Maybe(..))
-import Data.Options (Option(), Options(), optional, options, opt, (:=))
+import Data.Options (Option, Options, optional, options, opt, (:=))
 
 data Shape = Circle | Square | Triangle
 
