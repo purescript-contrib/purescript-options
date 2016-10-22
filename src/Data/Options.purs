@@ -1,6 +1,5 @@
 module Data.Options
-  ( Options
-  , runOptions
+  ( Options(..)
   , options
   , Option
   , assoc, (:=)
@@ -15,7 +14,7 @@ import Prelude
 import Data.Foreign (toForeign, Foreign)
 import Data.Maybe (Maybe, maybe)
 import Data.Monoid (mempty, class Monoid)
-import Data.Newtype (unwrap)
+import Data.Newtype (class Newtype, unwrap)
 import Data.Op (Op(..))
 import Data.StrMap as StrMap
 import Data.Tuple (Tuple(..))
@@ -25,8 +24,7 @@ import Data.Tuple (Tuple(..))
 -- | API are not accidentally passed to some other API.
 newtype Options opt = Options (Array (Tuple String Foreign))
 
-runOptions :: forall opt. Options opt -> Array (Tuple String Foreign)
-runOptions (Options xs) = xs
+derive instance newtypeOptions :: Newtype (Options opt) _
 
 instance semigroupOptions :: Semigroup (Options opt) where
   append (Options xs) (Options ys) = Options (xs <> ys)
@@ -37,7 +35,7 @@ instance monoidOptions :: Monoid (Options opt) where
 -- | Convert an `Options` value into a JavaScript object, suitable for passing
 -- | to JavaScript APIs.
 options :: forall opt. Options opt -> Foreign
-options = toForeign <<< StrMap.fromFoldable <<< runOptions
+options (Options os) = toForeign (StrMap.fromFoldable os)
 
 -- | An `Option` represents an opportunity to configure a specific attribute
 -- | of a call to some API. This normally corresponds to one specific property
