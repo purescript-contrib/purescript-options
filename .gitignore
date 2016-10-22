@@ -1,6 +1,8 @@
-.pulp-cache
-.psci
-.psci_modules/
-node_modules/
-bower_components/
-output/
+/.*
+!/.gitignore
+!/.jscsrc
+!/.jshintrc
+!/.travis.yml
+/bower_components/
+/node_modules/
+/output/
