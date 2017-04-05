@@ -17,7 +17,7 @@ instance shapeShow :: Show Shape where
   show Square = "square"
   show Triangle = "triangle"
 
-foreign import data Foo :: *
+foreign import data Foo :: Type
 
 foo :: Option Foo String
 foo = opt "foo"
