@@ -111,12 +111,8 @@ import Data.Tuple (Tuple(..))
 newtype Options opt = Options (Array (Tuple String Foreign))
 
 derive instance newtypeOptions :: Newtype (Options opt) _
-
-instance semigroupOptions :: Semigroup (Options opt) where
-  append (Options xs) (Options ys) = Options (xs <> ys)
-
-instance monoidOptions :: Monoid (Options opt) where
-  mempty = Options []
+derive newtype instance semigroupOptions ∷ Semigroup (Options opt)
+derive newtype instance monoidOptions ∷ Monoid (Options opt)
 
 -- | Convert an `Options` value into a JavaScript object, suitable for passing
 -- | to JavaScript APIs.
