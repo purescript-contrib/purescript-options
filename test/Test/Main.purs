@@ -2,13 +2,12 @@ module Test.Main where
 
 import Prelude
 
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (CONSOLE, log)
-
-import Data.Foreign (Foreign)
 import Data.Functor.Contravariant (cmap)
 import Data.Maybe (Maybe(..))
 import Data.Options (Option, Options, optional, options, opt, (:=))
+import Effect (Effect)
+import Effect.Console (log)
+import Foreign (Foreign)
 
 data Shape = Circle | Square | Triangle
 
@@ -53,7 +52,7 @@ opts = foo := "aaa" <>
        buz := (\a b c -> a + b + c) <>
        fuz := [Square, Circle, Triangle]
 
-main :: forall eff. Eff (console :: CONSOLE | eff) Unit
+main :: Effect Unit
 main = log <<< showForeign <<< options $ opts
 
 foreign import showForeign :: Foreign -> String
