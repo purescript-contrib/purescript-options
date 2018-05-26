@@ -97,13 +97,12 @@ module Data.Options
 
 import Prelude
 
-import Data.Foreign (toForeign, Foreign)
 import Data.Maybe (Maybe, maybe)
-import Data.Monoid (mempty, class Monoid)
 import Data.Newtype (class Newtype, unwrap)
 import Data.Op (Op(..))
-import Data.StrMap as StrMap
 import Data.Tuple (Tuple(..))
+import Foreign (Foreign, unsafeToForeign)
+import Foreign.Object as Object
 
 -- | The `Options` type represents a set of options. The type argument is a
 -- | phantom type, which is useful for ensuring that options for one particular
@@ -117,7 +116,7 @@ derive newtype instance monoidOptions ∷ Monoid (Options opt)
 -- | Convert an `Options` value into a JavaScript object, suitable for passing
 -- | to JavaScript APIs.
 options :: forall opt. Options opt -> Foreign
-options (Options os) = toForeign (StrMap.fromFoldable os)
+options (Options os) = unsafeToForeign (Object.fromFoldable os)
 
 -- | An `Option` represents an opportunity to configure a specific attribute
 -- | of a call to some API. This normally corresponds to one specific property
@@ -148,8 +147,8 @@ tag :: forall opt value. Option opt value -> value -> Option opt Unit
 tag o value = Op \_ -> o := value
 
 -- | The default method for turning a string property key into an
--- | `Option`. This function simply calls `toForeign` on the value. If
+-- | `Option`. This function simply calls `unsafeToForeign` on the value. If
 -- | you need some other behaviour, you can write your own function to replace
 -- | this one, and construct an `Option` yourself.
 defaultToOptions :: forall opt value. String -> value -> Options opt
-defaultToOptions k v = Options [Tuple k (toForeign v)]
+defaultToOptions k v = Options [Tuple k (unsafeToForeign v)]
