@@ -16,13 +16,13 @@
     "!LICENSE"
   ],
   "dependencies": {
-    "purescript-foreign": "#compiler/0.12",
-    "purescript-foreign-object": "#compiler/0.12",
-    "purescript-tuples": "#compiler/0.12",
-    "purescript-maybe": "#compiler/0.12",
-    "purescript-contravariant": "#compiler/0.12"
+    "purescript-foreign": "^5.0.0",
+    "purescript-foreign-object": "^1.0.0",
+    "purescript-tuples": "^5.0.0",
+    "purescript-maybe": "^4.0.0",
+    "purescript-contravariant": "^4.0.0"
   },
   "devDependencies": {
-    "purescript-console": "#compiler/0.12"
+    "purescript-console": "^4.1.0"
   }
 }
