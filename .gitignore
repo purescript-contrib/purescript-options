@@ -1,5 +1,6 @@
 /.*
 !/.gitignore
+!/.github
 !/.jscsrc
 !/.jshintrc
 !/.travis.yml
