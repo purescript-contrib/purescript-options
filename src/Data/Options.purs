@@ -45,7 +45,7 @@
 -- |
 -- | ```purescript
 -- | -- don't export this!
--- | foreign import createWriteStreamImpl :: forall eff. FilePath -> Foreign -> Eff (fs :: FS | eff) Unit
+-- | foreign import createWriteStreamImpl :: forall eff. FilePath -> Foreign -> Effect Unit
 -- | ```
 -- |
 -- | Finally, in the function you are going to export, take an `Options` value
@@ -54,7 +54,7 @@
 -- | suitable representation for passing to the JavaScript API.
 -- |
 -- | ```
--- | createWriteStream :: forall eff. FilePath -> Options CreateWriteStreamOptions -> Eff (fs :: FS | eff) Unit
+-- | createWriteStream :: forall eff. FilePath -> Options CreateWriteStreamOptions -> Effect Unit
 -- | createWriteStream path opts = createWriteStreamImpl path (options opts)
 -- | ```
 -- |
