@@ -118,6 +118,8 @@ import Foreign.Object as Object
 -- | API are not accidentally passed to some other API.
 newtype Options opt = Options (Array (Tuple String Foreign))
 
+type role Options nominal
+
 derive instance newtypeOptions :: Newtype (Options opt) _
 derive newtype instance semigroupOptions ∷ Semigroup (Options opt)
 derive newtype instance monoidOptions ∷ Monoid (Options opt)
