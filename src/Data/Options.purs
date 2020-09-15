@@ -55,7 +55,7 @@
 -- |
 -- | ```purescript
 -- | -- don't export this!
--- | foreign import createWriteStreamImpl :: forall eff. FilePath -> Foreign -> Effect Unit
+-- | foreign import createWriteStreamImpl :: FilePath -> Foreign -> Effect Unit
 -- | ```
 -- |
 -- | Finally, in the function you are going to export, take an `Options` value
