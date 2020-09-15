@@ -11,5 +11,6 @@ New features:
 Bugfixes:
 
 Other improvements:
+- Updated readme to reference the `Options.purs`' module documentation and improve the docs in small ways (#35 by @jordanmartinez)
 
 ## [0.0.0] - 2020-01-01
