@@ -18,9 +18,19 @@
 -- | usually the case that any subset of these properties can be specified;
 -- | however, a value of  type `{ flags :: String, defaultEncoding :: String, [...] }`
 -- | must include every property listed, even if you only want to specify
--- | one or two properties.
+-- | one or two properties. If we were to provide a strongly-typed solution,
+-- | we would need a sum type for every possibile combination. For example,
+-- | ```
+-- | data WritStreamOptions
+-- |  = Flags { flags :: String }
+-- |  | DefaultEncoding { defaultEncoding :: String }
+-- |  | Flags_DefaultEncoding { flags :: String, defaultEncoding :: String }
+-- |  | ... -- all other combinations
+-- | ```
+-- | That's a lot of boilerplate code!
 -- |
--- | Using this module, you could wrap `fs.createWriteStream` as follows:
+-- | This library provides a better solution for this problem. Using this
+-- | module, you could wrap `fs.createWriteStream` as follows:
 -- |
 -- | First, create a phantom type used for the options object:
 -- |
