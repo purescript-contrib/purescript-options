@@ -1,3 +1,5 @@
+-- | ## Overview of the Problem
+-- |
 -- | This module provides a way of dealing with the JS idiom of options
 -- | objects in PureScript, by giving you the tools to provide a reasonably
 -- | comfortable typed layer on top of JavaScript APIs which make use of this
@@ -14,13 +16,18 @@
 -- |
 -- | and so on.
 -- |
+-- | ## Why PureScript Records Don't Work
+-- |
 -- | PureScript's record types can be a little awkward for this, since it is
 -- | usually the case that any subset of these properties can be specified;
 -- | however, a value of  type `{ flags :: String, defaultEncoding :: String, [...] }`
 -- | must include every property listed, even if you only want to specify
--- | one or two properties.
+-- | one or two properties. 
 -- |
--- | Using this module, you could wrap `fs.createWriteStream` as follows:
+-- | ## Using this Library
+-- |
+-- | This library provides a better solution for this problem. Using this
+-- | module, you could wrap `fs.createWriteStream` as follows:
 -- |
 -- | First, create a phantom type used for the options object:
 -- |
@@ -45,7 +52,7 @@
 -- |
 -- | ```purescript
 -- | -- don't export this!
--- | foreign import createWriteStreamImpl :: forall eff. FilePath -> Foreign -> Effect Unit
+-- | foreign import createWriteStreamImpl :: FilePath -> Foreign -> Effect Unit
 -- | ```
 -- |
 -- | Finally, in the function you are going to export, take an `Options` value
@@ -68,6 +75,8 @@
 -- |    defaultEncoding := "utf8" <>
 -- |    flags := "rw"
 -- | ```
+-- |
+-- | ## Increasing Type Safety
 -- |
 -- | You can also use more specific types for more type safety. For example,
 -- | it would be safer to use the existing `FileFlags` and `Encoding` types
