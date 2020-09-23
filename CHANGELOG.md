@@ -11,6 +11,7 @@ New features:
 Bugfixes:
 
 Other improvements:
+  - Updated readme to reference the `Options.purs`' module documentation and improve the docs in small ways (#35 by @jordanmartinez)
 
 ## [v5.0.0](https://github.com/purescript-contrib/purescript-options/releases/tag/v5.0.0) - 2019-05-06
 
@@ -80,4 +81,3 @@ Updates for psc-publish
 - #4 - Add `opt` helper (@garyb)
 
 ## [0.0.1](https://github.com/purescript-contrib/purescript-options/releases/tag/0.0.1) - 2015-02-24
-
