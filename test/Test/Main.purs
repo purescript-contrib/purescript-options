@@ -8,7 +8,7 @@ import Data.Options (Option, Options, optional, options, opt, (:=))
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Foreign (Foreign)
-import Test.Spec (it)
+import Test.Spec (describe, it)
 import Test.Spec.Assertions (shouldEqual)
 import Test.Spec.Reporter (consoleReporter)
 import Test.Spec.Runner (runSpec)
@@ -67,3 +67,14 @@ main = do
           let actual = showForeign $ options opts
 
           actual `shouldEqual` expected
+        describe "optional" do
+          it "includes the option when it is provided" do
+            let expected = """{"fiz":"provided"}"""
+            let actual = showForeign $ options $ (:=) fiz $ Just "provided"
+
+            actual `shouldEqual` expected
+          it "excludes the option when it is not provided" do
+            let expected = """{}"""
+            let actual = showForeign $ options $ (:=) fiz Nothing
+
+            actual `shouldEqual` expected
