@@ -62,11 +62,12 @@ main :: Effect Unit
 main = do
   launchAff_
     $ runSpec [ consoleReporter ] do
-        it "works as expected" do
-          let expected = """{"aStringOption":"aaa","anIntOption":10,"aBooleanOption":true,"anOptionalStringOption":"c","shape":"square","anArrayOfShapesOption":["square","circle","triangle"]}"""
-          let actual = showForeign $ options myOptions
+        describe "end-to-end" do
+          it "works as expected" do
+            let expected = """{"aStringOption":"aaa","anIntOption":10,"aBooleanOption":true,"anOptionalStringOption":"c","shape":"square","anArrayOfShapesOption":["square","circle","triangle"]}"""
+            let actual = showForeign $ options myOptions
 
-          actual `shouldEqual` expected
+            actual `shouldEqual` expected
         describe "optional" do
           it "includes the option when it is provided" do
             let expected = """{"anotherOptionalStringOption":"provided"}"""
