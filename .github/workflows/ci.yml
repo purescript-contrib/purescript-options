@@ -31,4 +31,4 @@ jobs:
         run: spago build --no-install --purs-args '--censor-lib --strict'
 
       - name: Run tests
-        run: spago test --no-install
+        run: spago -x test/test.dhall test --no-install
