@@ -6,8 +6,12 @@ import Data.Functor.Contravariant (cmap)
 import Data.Maybe (Maybe(..))
 import Data.Options (Option, Options, optional, options, opt, (:=))
 import Effect (Effect)
-import Effect.Console (log)
+import Effect.Aff (launchAff_)
 import Foreign (Foreign)
+import Test.Spec (it)
+import Test.Spec.Assertions (shouldEqual)
+import Test.Spec.Reporter (consoleReporter)
+import Test.Spec.Runner (runSpec)
 
 data Shape = Circle | Square | Triangle
 
@@ -52,7 +56,14 @@ opts = foo := "aaa" <>
        buz := (\a b c -> a + b + c) <>
        fuz := [Square, Circle, Triangle]
 
-main :: Effect Unit
-main = log <<< showForeign <<< options $ opts
-
 foreign import showForeign :: Foreign -> String
+
+main :: Effect Unit
+main = do
+  launchAff_
+    $ runSpec [ consoleReporter ] do
+        it "works as expected" do
+          let expected = """{"foo":"aaa","bar":10,"baz":true,"bam":"c","shape":"square","fuz":["square","circle","triangle"]}"""
+          let actual = showForeign $ options opts
+
+          actual `shouldEqual` expected
