@@ -69,6 +69,26 @@ main = do
 
             actual `shouldEqual` expected
         describe "opt" do
+          it "works with `String`s" do
+            let expected = """{"aStringOption":"hello, world"}"""
+            let actual = showForeign $ options $ (:=) aStringOption "hello, world"
+
+            actual `shouldEqual` expected
+          it "works with `Int`s" do
+            let expected = """{"anIntOption":74}"""
+            let actual = showForeign $ options $ (:=) anIntOption 74
+
+            actual `shouldEqual` expected
+          it "works with `Boolean`s" do
+            let expected = """{"aBooleanOption":true}"""
+            let actual = showForeign $ options $ (:=) aBooleanOption true
+
+            actual `shouldEqual` expected
+          it "works with `Array`s" do
+            let expected = """{"anArrayOfShapesOption":["square","circle","triangle"]}"""
+            let actual = showForeign $ options $ (:=) anArrayOfShapesOption [Square, Circle, Triangle]
+
+            actual `shouldEqual` expected
           it "does nothing for functions" do
             let expected = """{}"""
             let actual = showForeign $ options $ (:=) aFunctionOption (\a b c -> a + b + c)
