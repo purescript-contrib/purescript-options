@@ -22,39 +22,39 @@ instance shapeShow :: Show Shape where
 
 foreign import data MyOptions :: Type
 
-foo :: Option MyOptions String
-foo = opt "foo"
+aStringOption :: Option MyOptions String
+aStringOption = opt "aStringOption"
 
-bar :: Option MyOptions Int
-bar = opt "bar"
+anIntOption :: Option MyOptions Int
+anIntOption = opt "anIntOption"
 
-baz :: Option MyOptions Boolean
-baz = opt "baz"
+aBooleanOption :: Option MyOptions Boolean
+aBooleanOption = opt "aBooleanOption"
 
-bam :: Option MyOptions (Maybe String)
-bam = optional (opt "bam")
+anOptionalStringOption :: Option MyOptions (Maybe String)
+anOptionalStringOption = optional (opt "anOptionalStringOption")
 
-fiz :: Option MyOptions (Maybe String)
-fiz = optional (opt "fiz")
+anotherOptionalStringOption :: Option MyOptions (Maybe String)
+anotherOptionalStringOption = optional (opt "anotherOptionalStringOption")
 
-biz :: Option MyOptions Shape
-biz = cmap show (opt "shape")
+aShapeOption :: Option MyOptions Shape
+aShapeOption = cmap show (opt "shape")
 
-buz :: Option MyOptions (Int -> Int -> Int -> Int)
-buz = opt "buz"
+aFunctionOption :: Option MyOptions (Int -> Int -> Int -> Int)
+aFunctionOption = opt "aFunctionOption"
 
-fuz :: Option MyOptions (Array Shape)
-fuz = cmap (map show) (opt "fuz")
+anArrayOfShapesOption :: Option MyOptions (Array Shape)
+anArrayOfShapesOption = cmap (map show) (opt "anArrayOfShapesOption")
 
-opts :: Options MyOptions
-opts = foo := "aaa" <>
-       bar := 10 <>
-       baz := true <>
-       bam := Just "c" <>
-       fiz := Nothing <>
-       biz := Square <>
-       buz := (\a b c -> a + b + c) <>
-       fuz := [Square, Circle, Triangle]
+myOptions :: Options MyOptions
+myOptions = aStringOption := "aaa" <>
+       anIntOption := 10 <>
+       aBooleanOption := true <>
+       anOptionalStringOption := Just "c" <>
+       anotherOptionalStringOption := Nothing <>
+       aShapeOption := Square <>
+       aFunctionOption := (\a b c -> a + b + c) <>
+       anArrayOfShapesOption := [Square, Circle, Triangle]
 
 foreign import showForeign :: Foreign -> String
 
@@ -63,18 +63,18 @@ main = do
   launchAff_
     $ runSpec [ consoleReporter ] do
         it "works as expected" do
-          let expected = """{"foo":"aaa","bar":10,"baz":true,"bam":"c","shape":"square","fuz":["square","circle","triangle"]}"""
-          let actual = showForeign $ options opts
+          let expected = """{"aStringOption":"aaa","anIntOption":10,"aBooleanOption":true,"anOptionalStringOption":"c","shape":"square","anArrayOfShapesOption":["square","circle","triangle"]}"""
+          let actual = showForeign $ options myOptions
 
           actual `shouldEqual` expected
         describe "optional" do
           it "includes the option when it is provided" do
-            let expected = """{"fiz":"provided"}"""
-            let actual = showForeign $ options $ (:=) fiz $ Just "provided"
+            let expected = """{"anotherOptionalStringOption":"provided"}"""
+            let actual = showForeign $ options $ (:=) anotherOptionalStringOption $ Just "provided"
 
             actual `shouldEqual` expected
           it "excludes the option when it is not provided" do
             let expected = """{}"""
-            let actual = showForeign $ options $ (:=) fiz Nothing
+            let actual = showForeign $ options $ (:=) anotherOptionalStringOption Nothing
 
             actual `shouldEqual` expected
