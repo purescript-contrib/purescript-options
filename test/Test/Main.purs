@@ -68,6 +68,12 @@ main = do
             let actual = showForeign $ options myOptions
 
             actual `shouldEqual` expected
+        describe "opt" do
+          it "does nothing for functions" do
+            let expected = """{}"""
+            let actual = showForeign $ options $ (:=) aFunctionOption (\a b c -> a + b + c)
+
+            actual `shouldEqual` expected
         describe "optional" do
           it "includes the option when it is provided" do
             let expected = """{"anotherOptionalStringOption":"provided"}"""
