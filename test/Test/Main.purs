@@ -6,8 +6,12 @@ import Data.Functor.Contravariant (cmap)
 import Data.Maybe (Maybe(..))
 import Data.Options (Option, Options, optional, options, opt, (:=))
 import Effect (Effect)
-import Effect.Console (log)
+import Effect.Aff (launchAff_)
 import Foreign (Foreign)
+import Test.Spec (describe, it)
+import Test.Spec.Assertions (shouldEqual)
+import Test.Spec.Reporter (consoleReporter)
+import Test.Spec.Runner (runSpec)
 
 data Shape = Circle | Square | Triangle
 
@@ -16,43 +20,88 @@ instance shapeShow :: Show Shape where
   show Square = "square"
   show Triangle = "triangle"
 
-foreign import data Foo :: Type
+foreign import data MyOptions :: Type
 
-foo :: Option Foo String
-foo = opt "foo"
+aStringOption :: Option MyOptions String
+aStringOption = opt "aStringOption"
 
-bar :: Option Foo Int
-bar = opt "bar"
+anIntOption :: Option MyOptions Int
+anIntOption = opt "anIntOption"
 
-baz :: Option Foo Boolean
-baz = opt "baz"
+aBooleanOption :: Option MyOptions Boolean
+aBooleanOption = opt "aBooleanOption"
 
-bam :: Option Foo (Maybe String)
-bam = optional (opt "bam")
+anOptionalStringOption :: Option MyOptions (Maybe String)
+anOptionalStringOption = optional (opt "anOptionalStringOption")
 
-fiz :: Option Foo (Maybe String)
-fiz = optional (opt "fiz")
+anotherOptionalStringOption :: Option MyOptions (Maybe String)
+anotherOptionalStringOption = optional (opt "anotherOptionalStringOption")
 
-biz :: Option Foo Shape
-biz = cmap show (opt "shape")
+aShapeOption :: Option MyOptions Shape
+aShapeOption = cmap show (opt "shape")
 
-buz :: Option Foo (Int -> Int -> Int -> Int)
-buz = opt "buz"
+aFunctionOption :: Option MyOptions (Int -> Int -> Int -> Int)
+aFunctionOption = opt "aFunctionOption"
 
-fuz :: Option Foo (Array Shape)
-fuz = cmap (map show) (opt "fuz")
+anArrayOfShapesOption :: Option MyOptions (Array Shape)
+anArrayOfShapesOption = cmap (map show) (opt "anArrayOfShapesOption")
 
-opts :: Options Foo
-opts = foo := "aaa" <>
-       bar := 10 <>
-       baz := true <>
-       bam := Just "c" <>
-       fiz := Nothing <>
-       biz := Square <>
-       buz := (\a b c -> a + b + c) <>
-       fuz := [Square, Circle, Triangle]
-
-main :: Effect Unit
-main = log <<< showForeign <<< options $ opts
+myOptions :: Options MyOptions
+myOptions = aStringOption := "aaa" <>
+       anIntOption := 10 <>
+       aBooleanOption := true <>
+       anOptionalStringOption := Just "c" <>
+       anotherOptionalStringOption := Nothing <>
+       aShapeOption := Square <>
+       aFunctionOption := (\a b c -> a + b + c) <>
+       anArrayOfShapesOption := [Square, Circle, Triangle]
 
 foreign import showForeign :: Foreign -> String
+
+main :: Effect Unit
+main = do
+  launchAff_
+    $ runSpec [ consoleReporter ] do
+        describe "end-to-end" do
+          it "works as expected" do
+            let expected = """{"aStringOption":"aaa","anIntOption":10,"aBooleanOption":true,"anOptionalStringOption":"c","shape":"square","anArrayOfShapesOption":["square","circle","triangle"]}"""
+            let actual = showForeign $ options myOptions
+
+            actual `shouldEqual` expected
+        describe "opt" do
+          it "works with `String`s" do
+            let expected = """{"aStringOption":"hello, world"}"""
+            let actual = showForeign $ options $ (:=) aStringOption "hello, world"
+
+            actual `shouldEqual` expected
+          it "works with `Int`s" do
+            let expected = """{"anIntOption":74}"""
+            let actual = showForeign $ options $ (:=) anIntOption 74
+
+            actual `shouldEqual` expected
+          it "works with `Boolean`s" do
+            let expected = """{"aBooleanOption":true}"""
+            let actual = showForeign $ options $ (:=) aBooleanOption true
+
+            actual `shouldEqual` expected
+          it "works with `Array`s" do
+            let expected = """{"anArrayOfShapesOption":["square","circle","triangle"]}"""
+            let actual = showForeign $ options $ (:=) anArrayOfShapesOption [Square, Circle, Triangle]
+
+            actual `shouldEqual` expected
+          it "does nothing for functions" do
+            let expected = """{}"""
+            let actual = showForeign $ options $ (:=) aFunctionOption (\a b c -> a + b + c)
+
+            actual `shouldEqual` expected
+        describe "optional" do
+          it "includes the option when it is provided" do
+            let expected = """{"anotherOptionalStringOption":"provided"}"""
+            let actual = showForeign $ options $ (:=) anotherOptionalStringOption $ Just "provided"
+
+            actual `shouldEqual` expected
+          it "excludes the option when it is not provided" do
+            let expected = """{}"""
+            let actual = showForeign $ options $ (:=) anotherOptionalStringOption Nothing
+
+            actual `shouldEqual` expected

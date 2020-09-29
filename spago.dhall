@@ -7,6 +7,7 @@
   , "foreign-object"
   , "maybe"
   , "psci-support"
+  , "spec"
   , "tuples"
   ]
 , packages = ./packages.dhall
