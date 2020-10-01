@@ -1,3 +1,4 @@
+-- Importing modules
 module Test.Main where
 
 import Prelude
@@ -12,9 +13,9 @@ import Test.Spec (describe, it)
 import Test.Spec.Assertions (shouldEqual)
 import Test.Spec.Reporter (consoleReporter)
 import Test.Spec.Runner (runSpec)
-
+-- defining vars
 data Shape = Circle | Square | Triangle
-
+-- object
 instance shapeShow :: Show Shape where
   show Circle = "circle"
   show Square = "square"
