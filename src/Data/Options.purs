@@ -119,6 +119,8 @@ import Foreign.Object as Object
 newtype Options :: forall k. k -> Type
 newtype Options opt = Options (Array (Tuple String Foreign))
 
+type role Options nominal
+
 derive instance newtypeOptions :: Newtype (Options opt) _
 derive newtype instance semigroupOptions ∷ Semigroup (Options opt)
 derive newtype instance monoidOptions ∷ Monoid (Options opt)
