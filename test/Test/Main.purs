@@ -6,12 +6,9 @@ import Data.Functor.Contravariant (cmap)
 import Data.Maybe (Maybe(..))
 import Data.Options (Option, Options, optional, options, opt, (:=))
 import Effect (Effect)
-import Effect.Aff (launchAff_)
+import Effect.Console (log)
 import Foreign (Foreign)
-import Test.Spec (describe, it)
-import Test.Spec.Assertions (shouldEqual)
-import Test.Spec.Reporter (consoleReporter)
-import Test.Spec.Runner (runSpec)
+import Test.Assert (assertEqual)
 
 data Shape = Circle | Square | Triangle
 
@@ -58,10 +55,27 @@ myOptions = aStringOption := "aaa" <>
 
 foreign import showForeign :: Foreign -> String
 
+-----------------------------------------------------------------
+
+-- Provide similar API to purescript-spec to reduce code changes
+
+describe :: String -> Effect Unit -> Effect Unit
+describe msg runTest = do
+  log msg
+  runTest
+
+it :: String -> Effect Unit -> Effect Unit
+it msg runTest = do
+  log $ "\t" <> msg
+  runTest
+
+shouldEqual :: forall a. Eq a => Show a => a -> a -> Effect Unit
+shouldEqual actual expected = assertEqual { actual, expected }
+
+-----------------------------------------------------------------
+
 main :: Effect Unit
 main = do
-  launchAff_
-    $ runSpec [ consoleReporter ] do
         describe "end-to-end" do
           it "works as expected" do
             let expected = """{"aStringOption":"aaa","anIntOption":10,"aBooleanOption":true,"anOptionalStringOption":"c","shape":"square","anArrayOfShapesOption":["square","circle","triangle"]}"""
