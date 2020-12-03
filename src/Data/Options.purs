@@ -116,6 +116,7 @@ import Foreign.Object as Object
 -- | The `Options` type represents a set of options. The type argument is a
 -- | phantom type, which is useful for ensuring that options for one particular
 -- | API are not accidentally passed to some other API.
+newtype Options :: forall k. k -> Type
 newtype Options opt = Options (Array (Tuple String Foreign))
 
 type role Options nominal
@@ -133,6 +134,7 @@ options (Options os) = unsafeToForeign (Object.fromFoldable os)
 -- | of a call to some API. This normally corresponds to one specific property
 -- | of an "options" object in JavaScript APIs, but can in general correspond
 -- | to zero or more actual properties.
+type Option :: forall k. k -> (Type -> Type)
 type Option opt = Op (Options opt)
 
 -- | Associates a value with a specific option.
