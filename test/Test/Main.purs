@@ -66,7 +66,7 @@ describe msg runTest = do
 
 it :: String -> Effect Unit -> Effect Unit
 it msg runTest = do
-  log $ "\t" <> msg
+  log $ ">> " <> msg
   runTest
 
 shouldEqual :: forall a. Eq a => Show a => a -> a -> Effect Unit
