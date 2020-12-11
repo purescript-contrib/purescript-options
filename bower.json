@@ -16,13 +16,13 @@
     "!LICENSE"
   ],
   "dependencies": {
-    "purescript-foreign": "^5.0.0",
-    "purescript-foreign-object": "^2.0.0",
-    "purescript-tuples": "^5.0.0",
-    "purescript-maybe": "^4.0.0",
-    "purescript-contravariant": "^4.0.0"
+    "purescript-foreign": "master",
+    "purescript-foreign-object": "master",
+    "purescript-tuples": "master",
+    "purescript-maybe": "master",
+    "purescript-contravariant": "master"
   },
   "devDependencies": {
-    "purescript-console": "^4.1.0"
+    "purescript-console": "master"
   }
 }
