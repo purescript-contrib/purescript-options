@@ -8,7 +8,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/purescript-contrib/purescript-options.git"
+    "url": "https://github.com/purescript-contrib/purescript-options.git"
   },
   "ignore": [
     "*",
@@ -16,13 +16,15 @@
     "!LICENSE"
   ],
   "dependencies": {
-    "purescript-foreign": "master",
-    "purescript-foreign-object": "master",
-    "purescript-tuples": "master",
-    "purescript-maybe": "master",
-    "purescript-contravariant": "master"
+    "purescript-contravariant": "^5.0.0",
+    "purescript-foreign": "^6.0.0",
+    "purescript-foreign-object": "^3.0.0",
+    "purescript-maybe": "^5.0.0",
+    "purescript-tuples": "^6.0.0"
   },
   "devDependencies": {
-    "purescript-console": "master"
+    "purescript-assert": "^5.0.0",
+    "purescript-console": "^5.0.0",
+    "purescript-effect": "^3.0.0"
   }
 }
