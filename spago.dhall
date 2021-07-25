@@ -7,6 +7,8 @@
   , "foreign"
   , "foreign-object"
   , "maybe"
+  , "newtype"
+  , "prelude"
   , "psci-support"
   , "tuples"
   ]
