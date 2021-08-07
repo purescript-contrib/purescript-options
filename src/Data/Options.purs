@@ -22,7 +22,7 @@
 -- | usually the case that any subset of these properties can be specified;
 -- | however, a value of  type `{ flags :: String, defaultEncoding :: String, [...] }`
 -- | must include every property listed, even if you only want to specify
--- | one or two properties. 
+-- | one or two properties.
 -- |
 -- | ## Using this Library
 -- |
@@ -61,7 +61,7 @@
 -- | suitable representation for passing to the JavaScript API.
 -- |
 -- | ```
--- | createWriteStream :: forall eff. FilePath -> Options CreateWriteStreamOptions -> Effect Unit
+-- | createWriteStream :: FilePath -> Options CreateWriteStreamOptions -> Effect Unit
 -- | createWriteStream path opts = createWriteStreamImpl path (options opts)
 -- | ```
 -- |
