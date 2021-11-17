@@ -51,8 +51,7 @@ myOptions = aStringOption := "aaa"
   <> anotherOptionalStringOption := Nothing
   <> aShapeOption := Square
   <> aFunctionOption := (\a b c -> a + b + c)
-  <>
-    anArrayOfShapesOption := [ Square, Circle, Triangle ]
+  <> anArrayOfShapesOption := [ Square, Circle, Triangle ]
 
 foreign import showForeign :: Foreign -> String
 
