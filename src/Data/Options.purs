@@ -97,7 +97,8 @@ module Data.Options
   ( Options(..)
   , options
   , Option
-  , assoc, (:=)
+  , assoc
+  , (:=)
   , optional
   , opt
   , tag
@@ -122,8 +123,8 @@ newtype Options opt = Options (Array (Tuple String Foreign))
 type role Options nominal
 
 derive instance newtypeOptions :: Newtype (Options opt) _
-derive newtype instance semigroupOptions ∷ Semigroup (Options opt)
-derive newtype instance monoidOptions ∷ Monoid (Options opt)
+derive newtype instance semigroupOptions :: Semigroup (Options opt)
+derive newtype instance monoidOptions :: Monoid (Options opt)
 
 -- | Convert an `Options` value into a JavaScript object, suitable for passing
 -- | to JavaScript APIs.
@@ -164,4 +165,4 @@ tag o value = Op \_ -> o := value
 -- | you need some other behaviour, you can write your own function to replace
 -- | this one, and construct an `Option` yourself.
 defaultToOptions :: forall opt value. String -> value -> Options opt
-defaultToOptions k v = Options [Tuple k (unsafeToForeign v)]
+defaultToOptions k v = Options [ Tuple k (unsafeToForeign v) ]
