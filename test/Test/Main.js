@@ -4,4 +4,4 @@ function showForeign(a){
   return JSON.stringify(a);
 }
 
-exports.showForeign = showForeign;
+export {showForeign};
