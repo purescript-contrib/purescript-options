@@ -9,7 +9,6 @@
   , "maybe"
   , "newtype"
   , "prelude"
-  , "psci-support"
   , "tuples"
   ]
 , packages = ./packages.dhall
