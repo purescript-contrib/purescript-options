@@ -16,15 +16,15 @@
     "!LICENSE"
   ],
   "dependencies": {
-    "purescript-contravariant": "^5.0.0",
-    "purescript-foreign": "^6.0.0",
-    "purescript-foreign-object": "^3.0.0",
-    "purescript-maybe": "^5.0.0",
-    "purescript-tuples": "^6.0.0"
+    "purescript-contravariant": "master",
+    "purescript-foreign": "master",
+    "purescript-foreign-object": "master",
+    "purescript-maybe": "master",
+    "purescript-tuples": "master"
   },
   "devDependencies": {
-    "purescript-assert": "^5.0.0",
-    "purescript-console": "^5.0.0",
-    "purescript-effect": "^3.0.0"
+    "purescript-assert": "master",
+    "purescript-console": "master",
+    "purescript-effect": "master"
   }
 }
