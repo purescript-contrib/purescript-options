@@ -1,0 +1,26 @@
+package:
+  name: options
+  description: PureScript Options
+  publish:
+    version: 7.0.1
+    license: MIT
+    location:
+      githubOwner: purescript-contrib
+      githubRepo: purescript-options
+  dependencies:
+    - contravariant: ">=6.0.0 <7.0.0"
+    - foreign: ">=7.0.0 <8.0.0"
+    - foreign-object: ">=4.0.0 <5.0.0"
+    - maybe: ">=6.0.0 <7.0.0"
+    - newtype: ">=5.0.0 <6.0.0"
+    - prelude: ">=6.0.0 <7.0.0"
+    - tuples: ">=7.0.0 <8.0.0"
+  test:
+    main: Test.Main
+    dependencies:
+      - assert
+      - console
+      - effect
+workspace:
+  packageSet:
+    registry: 81.4.0
